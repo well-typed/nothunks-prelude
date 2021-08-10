@@ -41,10 +41,11 @@ Design goals for the library include:
   However, the strict version _must_ be a distinct type from the lazy one,
   so that class instances (such as `Functor`) can be defined correctly.
 
-* Support for `nothunks`, enabling testing for unexpected thunks. There are
-  two aspects to this:
+* Support for [`nothunks`][nothunks-lib], enabling testing for unexpected
+  thunks. There are two aspects to this:
 
-  - `NoThunks` class instances for all datatypes defined in `nothunks-prelude`.
+  - [`NoThunks`][nothunks-class] class instances for all datatypes defined in
+    `nothunks-prelude`.
 
   - For functions that are commonly used to store long-lived application state,
     the library offers variants that _check_ that that state is thunk-free. The
@@ -87,11 +88,15 @@ Design goals for the library include:
   - `Data.Maybe`
   - `Data.Tuple`
 
+  (Note that `Complex` and `Ratio` are _already_ strict in their arguments.)
+
   References (which should be strict in the value they reference):
 
   - `Data.IORef`
   - `Data.STRef`
   - `Control.Concurrent.MVar`
+
+  (TODO: Maybe also `Control.Concurrent.Chan`?)
 
 * `transformers`
 
@@ -271,5 +276,6 @@ number of ways:
   a lazy variant, we just need code generation to provide the wrapping. No
   testing necessary.
 
-
+[nothunks-lib]: https://hackage.haskell.org/package/nothunks
+[nothunks-class]: https://hackage.haskell.org/package/nothunks-0.1.3/docs/NoThunks-Class.html#t:NoThunks
 
