@@ -1,0 +1,92 @@
+cabal-version:      2.4
+name:               nothunks-prelude
+version:            0.1.0.0
+synopsis:           Strict versions of commonly used data types.
+description:        The `nothunks-prelude` library is intended as a
+                    batteries-included drop-in replacement for many of the
+                    standard libraries, providing strict versions of commonly
+                    used data types, monad transformers and references (such
+                    as `IORef`) that keep values in weak-head normal form.
+bug-reports:        https://github.com/well-typed/nothunks-prelude/issues
+license:            BSD-3-Clause
+author:             Edsko de Vries
+maintainer:         edsko@well-typed.com
+category:           Data
+extra-source-files: CHANGELOG.md README.md
+
+source-repository head
+  type:                git
+  location:            https://github.com/well-typed/nothunks-prelude
+
+library
+    exposed-modules:
+        NoThunks.List
+        NoThunks.StateT
+        NoThunks.Strict
+
+        -- Primarily exposed for the benefit of tests:
+        NoThunks.Internal.List.API
+        NoThunks.Internal.List.Strict
+        NoThunks.Internal.StateT.API
+        NoThunks.Internal.StateT.Strict
+        NoThunks.Internal.TH.API
+        NoThunks.Internal.TH.Classes
+    build-depends:
+        -- ghc 8.8, 8.10, 9.0
+        base           >= 4.13 && < 4.16
+      , containers     >= 0.6  && < 0.7
+      , transformers   >= 0.5  && < 0.6
+      , th-abstraction >= 0.4  && < 0.5
+        -- No bounds on TH: whatever ships with ghc
+      , template-haskell
+    hs-source-dirs:
+        src
+    default-language:
+        Haskell2010
+    default-extensions:
+        BangPatterns
+        FlexibleContexts
+        FlexibleInstances
+        GADTs
+        InstanceSigs
+        NamedFieldPuns
+        PatternSynonyms
+        PolyKinds
+        RankNTypes
+        ScopedTypeVariables
+        TypeApplications
+        TypeFamilies
+        ViewPatterns
+    other-extensions:
+        CPP
+        TemplateHaskell
+    ghc-options:
+        -Wall
+
+        -- Insisting on no orphans would mean nearly the entire library would be
+        -- a single module (the one defining the 'Strict' data family).
+        -Wno-orphans
+
+test-suite test-nothunks-prelude
+    type:
+        exitcode-stdio-1.0
+    main-is:
+        Test.hs
+    other-modules:
+        Test.Sanity.API.List
+        Test.Sanity.API.StateT
+    build-depends:
+        base >= 4.13
+      , nothunks-prelude
+      , transformers
+    hs-source-dirs:
+        test
+    default-language:
+        Haskell2010
+    default-extensions:
+        ScopedTypeVariables
+        TypeApplications
+    other-extensions:
+        TemplateHaskell
+    ghc-options:
+        -Wall
